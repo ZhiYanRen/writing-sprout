@@ -20,4 +20,7 @@
 
 ## 发布
 
-首次线上与导航同步验证将在发布后追加。
+- 公开仓库可见性与 origin/main 已核对，首个提交 `8373a22` 的工作流 build/deploy 均成功。
+- GitHub Pages 返回正式网址 https://zhiyanren.github.io/writing-sprout/ 。正式 HTML、JS、样式、Manifest、Service Worker、Logo、PNG 主屏幕图标与插画 14 项资源均 HTTP 200，逐字节符合构建产物。
+- 正式网址上重跑 6 种 Chrome 视口完整流程、中文组合输入/路由、备份导入合并与 3 种 WebKit 视口流程。
+- 应用岛登记脚本已实际验证网址，目录设置 published，并同步 Logo；本地 5 项目录测试、6 视口浏览器与专门新入口检查通过，验证新窗口打开、window.opener=null 及实际到达写作芽芽页面。应用岛提交 `28669b5` 的 CI/Pages 已成功；线上目录、Logo、新窗口与实际到达目标页面均通过浏览器验证。

@@ -15,7 +15,7 @@ public/styles.css 的 :root 为唯一运行令牌来源（Model B），本文镜
 - --line #dce4ee；--danger #a32d3e；--focus #324fc1。
 - 正文系统中文 sans（PingFang SC / Microsoft YaHei）16px/1.65；标题优先圆润系统字 28–34px/1.35；编辑正文使用系统中文 serif（Songti SC / Noto Serif CJK SC），20px/2.2。无远程字体依赖。
 - 卡片 24px、控件 14px 圆角，间距 8/12/16/24/32px；触控目标至少 44px。
-- 页面 220ms 入场、按钮 150ms 按压、完成 500ms 单次叶片反馈；只用 transform/opacity，不做循环；减少动态效果全部停用。
+- 页面 220ms 入场、按钮 150ms 按压、完成 1.8s 单次奖励反馈；只用 transform/opacity，不做循环；减少动态效果全部停用。
 - 全局滚动条：thumb --scroll-thumb #a4b3c5，hover #72879f，active --ink，track transparent；forced-colors 用系统默认。
 
 ## 品牌与插画

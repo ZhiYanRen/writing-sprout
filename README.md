@@ -16,7 +16,7 @@ Node.js 22+；`npm ci`，`npm test`，`npm run build`，`npm start`。
 ## 发布
 
 唯一公开源码仓库：https://github.com/ZhiYanRen/writing-sprout 。main 主干，Pages 来源 GitHub Actions。
-`.github/workflows/pages.yml` 验证后发布 `dist/`，PR 仅验证。正式网址待首次部署后核验。
+`.github/workflows/pages.yml` 验证后发布 `dist/`，PR 仅验证。正式网站：[写作芽芽](https://zhiyanren.github.io/writing-sprout/)（首次部署及线上操作已验证）。
 
 ## 数据与限制
 

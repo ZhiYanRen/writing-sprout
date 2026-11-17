@@ -107,7 +107,7 @@
 ## 9. 写作芽芽实际配置
 
 - 本地 `/Users/yanren/Documents/github/writing-sprout`，唯一公开仓库 https://github.com/ZhiYanRen/writing-sprout ，main 主干；不创建分支或 worktree。
-- GitHub Pages 来源 Actions，工作流 `.github/workflows/pages.yml`，静态产物 `dist/`。正式网址首次部署后回填；所有资源基于 `/writing-sprout/` 子路径。
+- GitHub Pages 来源 Actions，工作流 `.github/workflows/pages.yml`，静态产物 `dist/`。正式网址 https://zhiyanren.github.io/writing-sprout/ （已发布并访问验证）；所有资源基于 `/writing-sprout/` 子路径。
 - 原生 HTML/CSS/ES modules；Node.js 22+ 仅供开发构建。运行无第三方依赖，无后端和远程个人数据。
 - 安装 `npm ci`，验证 `npm test`、`npm run build`、`git diff --check`；UI 必跑 `npm run test:browser`；本地 `npm start`，端口 4186。
 - 视觉权威 DESIGN.md；行为权威 UX-CONTRACT.md；令牌 public/styles.css。主题专属 Logo 在 public/assets/logo.svg，favicon 与主屏幕图标同步更新并检查子路径及离线缓存。

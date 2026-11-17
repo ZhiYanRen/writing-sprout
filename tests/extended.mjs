@@ -1,0 +1,18 @@
+import {chromium,webkit} from '@playwright/test';
+import assert from 'node:assert/strict';
+const base=process.env.TEST_URL||'http://127.0.0.1:4186/writing-sprout/';
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+try{
+ const c=await browser.newContext(),p=await c.newPage();await p.goto(base+'#write/park');await p.locator('#draft-text').fill('原来已写的作品。');await p.locator('.skip-link').focus();await p.keyboard.press('Enter');assert.equal(new URL(p.url()).hash,'#write/park');assert.equal(await p.evaluate(()=>document.activeElement.id),'main');
+ await p.locator('#draft-text').dispatchEvent('compositionstart');await p.locator('#draft-text').fill('中文输入中的新文字');assert.match(await p.evaluate(()=>localStorage.getItem('writing-sprout-v1')),/原来已写/);
+ await p.evaluate(()=>location.hash='genres');await p.locator('#draft-text').dispatchEvent('compositionend');await p.getByRole('heading',{name:'按体裁写作',exact:true}).waitFor();
+ const entries=await p.evaluate(()=>JSON.parse(localStorage.getItem('writing-sprout-v1')).entries);assert.equal(entries[0].text,'中文输入中的新文字');assert.equal(entries[0].id,'park','IME navigation must save to original lesson');
+ await p.goto(base+'#works');await p.locator('#import-file').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('{bad')});await p.locator('#import-error').waitFor();assert.equal(await p.locator('.work-card').count(),1);
+ const incoming={id:'rain',title:'雨天',text:'雨点落在花伞上。',checks:[false,false,false],completed:false,updatedAt:new Date().toISOString()};
+ await p.locator('#import-file').setInputFiles({name:'valid.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({schema:1,entries:[incoming]}))});await p.waitForFunction(()=>document.querySelectorAll('.work-card').length===2);
+ await p.locator('#import-file').setInputFiles({name:'repeat.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({schema:1,entries:[{...incoming,text:'不能覆盖'}]}))});assert.equal((await p.evaluate(()=>JSON.parse(localStorage.getItem('writing-sprout-v1')).entries.find(e=>e.id==='rain'))).text,incoming.text);
+ for(const type of ['pictures','genres','skills']){await p.goto(base+'#'+type);await p.locator('.lesson-card').first().waitFor();const total={pictures:8,genres:6,skills:6}[type];await p.getByRole('button',{name:'全部',exact:true}).click();assert.equal(await p.locator('.lesson-card').count(),total);await p.getByRole('button',{name:'三年级',exact:true}).click();assert(await p.locator('.lesson-card').count()>0);}
+ await p.goto(base+'#write/park');await p.locator('#draft-text').fill('先写的。');await p.locator('a[href="#works"]').first().click();await p.locator('.work-card').first().waitFor();await c.close();
+ console.log('PASS IME navigation, import validation/merge, catalog filtering');
+}finally{await browser.close();}
+const wk=await webkit.launch();try{for(const [width,height]of [[1194,834],[834,1194],[390,844]]){const c=await wk.newContext({viewport:{width,height},hasTouch:true,isMobile:true});const p=await c.newPage();await p.goto(base+'#write/park');await p.locator('#draft-text').fill('在 WebKit 中写下故事。');await p.reload();assert.match(await p.locator('#draft-text').inputValue(),/WebKit/);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await p.getByRole('button',{name:'使用帮助'}).click();await p.locator('dialog').waitFor();await p.keyboard.press('Escape');await p.screenshot({path:`work/qa/webkit-${width}.png`,fullPage:true});await c.close();}console.log('PASS WebKit iPad landscape/portrait and phone');}finally{await wk.close();}
